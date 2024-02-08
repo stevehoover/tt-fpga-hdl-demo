@@ -4,7 +4,7 @@
 //_\SV
    // Include Tiny Tapeout Lab.
    // Included URL: "https://raw.githubusercontent.com/os-fpga/Virtual-FPGA-Lab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlv_lib/tiny_tapeout_lib.tlv"// Included URL: "https://raw.githubusercontent.com/os-fpga/Virtual-FPGA-Lab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlv_lib/fpga_includes.tlv"
-//_\source top.tlv 63
+//_\source top.tlv 110
 
 //_\SV
 
@@ -19,24 +19,29 @@ module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, outpu
    
    logic [31:0] r;
    always @(posedge clk) r <= 0;
-   assign ui_in = r[7:0];
+   //assign ui_in = r[7:0];
    
    logic ena = 1'b0;
    logic rst_n = ! reset;
 
-   /*
    // Or, to provide specific inputs at specific times (as for lab C-TB) ...
    // BE SURE TO COMMENT THE ASSIGNMENT OF INPUTS ABOVE.
    // BE SURE TO DRIVE THESE ON THE B-PHASE OF THE CLOCK (ODD STEPS).
    // Driving on the rising clock edge creates a race with the clock that has unpredictable simulation behavior.
    initial begin
       #1  // Drive inputs on the B-phase.
-         ui_in = 8'h0;
-      #10 // Step 5 cycles, past reset.
-         ui_in = 8'hFF;
-      // ...etc.
+         ui_in = 8'h55;
+      #20
+         ui_in = 8'h01;
+      #6
+         ui_in = 8'h81;
+      #10
+         ui_in = 8'h01;
+      #10
+         ui_in = 8'h24;
+      #16
+         ui_in = 8'ha4;
    end
-   */
 
    // Instantiate the Tiny Tapeout module.
    tt_um_template tt(.*);
@@ -99,6 +104,122 @@ logic [7:0] L0_sseg_digit_n_a0;
 // For $sseg_segment_n.
 logic [6:0] L0_sseg_segment_n_a0;
 
+// For /fpga_pins/fpga|calc$diff.
+logic [7:0] FpgaPins_Fpga_CALC_diff_a1,
+            FpgaPins_Fpga_CALC_diff_a2;
+
+// For /fpga_pins/fpga|calc$digit.
+logic [3:0] FpgaPins_Fpga_CALC_digit_a3;
+
+// For /fpga_pins/fpga|calc$equals_in.
+logic FpgaPins_Fpga_CALC_equals_in_a0,
+      FpgaPins_Fpga_CALC_equals_in_a1,
+      FpgaPins_Fpga_CALC_equals_in_a2;
+
+// For /fpga_pins/fpga|calc$mem.
+logic [7:0] FpgaPins_Fpga_CALC_mem_a2,
+            FpgaPins_Fpga_CALC_mem_a3,
+            FpgaPins_Fpga_CALC_mem_a4;
+
+// For /fpga_pins/fpga|calc$op.
+logic [2:0] FpgaPins_Fpga_CALC_op_a0,
+            FpgaPins_Fpga_CALC_op_a1,
+            FpgaPins_Fpga_CALC_op_a2;
+
+// For /fpga_pins/fpga|calc$out.
+logic [7:0] FpgaPins_Fpga_CALC_out_a2,
+            FpgaPins_Fpga_CALC_out_a3,
+            FpgaPins_Fpga_CALC_out_a4;
+
+// For /fpga_pins/fpga|calc$prod.
+logic [7:0] FpgaPins_Fpga_CALC_prod_a1,
+            FpgaPins_Fpga_CALC_prod_a2;
+
+// For /fpga_pins/fpga|calc$quot.
+logic [7:0] FpgaPins_Fpga_CALC_quot_a1,
+            FpgaPins_Fpga_CALC_quot_a2;
+
+// For /fpga_pins/fpga|calc$reset.
+logic FpgaPins_Fpga_CALC_reset_a0,
+      FpgaPins_Fpga_CALC_reset_a1,
+      FpgaPins_Fpga_CALC_reset_a2;
+
+// For /fpga_pins/fpga|calc$reset_or_valid.
+logic FpgaPins_Fpga_CALC_reset_or_valid_a1;
+
+// For /fpga_pins/fpga|calc$sum.
+logic [7:0] FpgaPins_Fpga_CALC_sum_a1,
+            FpgaPins_Fpga_CALC_sum_a2;
+
+// For /fpga_pins/fpga|calc$val1.
+logic [7:0] FpgaPins_Fpga_CALC_val1_a1;
+
+// For /fpga_pins/fpga|calc$val2.
+logic [7:0] FpgaPins_Fpga_CALC_val2_a0,
+            FpgaPins_Fpga_CALC_val2_a1;
+
+// For /fpga_pins/fpga|calc$valid.
+logic FpgaPins_Fpga_CALC_valid_a1,
+      FpgaPins_Fpga_CALC_valid_a2;
+
+
+
+
+   //
+   // Scope: /fpga_pins
+   //
+
+
+      //
+      // Scope: /fpga
+      //
+
+
+         //
+         // Scope: |calc
+         //
+
+            // Staging of $diff.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_diff_a2[7:0] <= FpgaPins_Fpga_CALC_diff_a1[7:0];
+
+            // Staging of $equals_in.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_equals_in_a1 <= FpgaPins_Fpga_CALC_equals_in_a0;
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_equals_in_a2 <= FpgaPins_Fpga_CALC_equals_in_a1;
+
+            // Staging of $mem.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_mem_a3[7:0] <= FpgaPins_Fpga_CALC_mem_a2[7:0];
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_mem_a4[7:0] <= FpgaPins_Fpga_CALC_mem_a3[7:0];
+
+            // Staging of $op.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_op_a1[2:0] <= FpgaPins_Fpga_CALC_op_a0[2:0];
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_op_a2[2:0] <= FpgaPins_Fpga_CALC_op_a1[2:0];
+
+            // Staging of $out.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_out_a3[7:0] <= FpgaPins_Fpga_CALC_out_a2[7:0];
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_out_a4[7:0] <= FpgaPins_Fpga_CALC_out_a3[7:0];
+
+            // Staging of $prod.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_prod_a2[7:0] <= FpgaPins_Fpga_CALC_prod_a1[7:0];
+
+            // Staging of $quot.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_quot_a2[7:0] <= FpgaPins_Fpga_CALC_quot_a1[7:0];
+
+            // Staging of $reset.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_reset_a1 <= FpgaPins_Fpga_CALC_reset_a0;
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_reset_a2 <= FpgaPins_Fpga_CALC_reset_a1;
+
+            // Staging of $sum.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_sum_a2[7:0] <= FpgaPins_Fpga_CALC_sum_a1[7:0];
+
+            // Staging of $val2.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_val2_a1[7:0] <= FpgaPins_Fpga_CALC_val2_a0[7:0];
+
+            // Staging of $valid.
+            always_ff @(posedge clk) FpgaPins_Fpga_CALC_valid_a2 <= FpgaPins_Fpga_CALC_valid_a1;
+
+
+
+
 
 
 
@@ -133,6 +254,52 @@ logic [6:0] L0_sseg_segment_n_a0;
       end
 
       //
+      // Scope: /fpga_pins
+      //
+      if (1) begin : \/fpga_pins 
+
+         //
+         // Scope: /fpga
+         //
+         if (1) begin : \/fpga 
+
+            //
+            // Scope: |calc
+            //
+            if (1) begin : P_calc
+               (* keep *) logic [7:0] \///?$reset_or_valid@1$diff ;
+               assign \///?$reset_or_valid@1$diff = FpgaPins_Fpga_CALC_diff_a1;
+               (* keep *) logic [3:0] \///@3$digit ;
+               assign \///@3$digit = FpgaPins_Fpga_CALC_digit_a3;
+               (* keep *) logic  \///@0$equals_in ;
+               assign \///@0$equals_in = FpgaPins_Fpga_CALC_equals_in_a0;
+               (* keep *) logic [7:0] \///@2$mem ;
+               assign \///@2$mem = FpgaPins_Fpga_CALC_mem_a2;
+               (* keep *) logic [2:0] \///@0$op ;
+               assign \///@0$op = FpgaPins_Fpga_CALC_op_a0;
+               (* keep *) logic [7:0] \///@2$out ;
+               assign \///@2$out = FpgaPins_Fpga_CALC_out_a2;
+               (* keep *) logic [7:0] \///?$reset_or_valid@1$prod ;
+               assign \///?$reset_or_valid@1$prod = FpgaPins_Fpga_CALC_prod_a1;
+               (* keep *) logic [7:0] \///?$reset_or_valid@1$quot ;
+               assign \///?$reset_or_valid@1$quot = FpgaPins_Fpga_CALC_quot_a1;
+               (* keep *) logic  \///@0$reset ;
+               assign \///@0$reset = FpgaPins_Fpga_CALC_reset_a0;
+               (* keep *) logic  \///@1$reset_or_valid ;
+               assign \///@1$reset_or_valid = FpgaPins_Fpga_CALC_reset_or_valid_a1;
+               (* keep *) logic [7:0] \///?$reset_or_valid@1$sum ;
+               assign \///?$reset_or_valid@1$sum = FpgaPins_Fpga_CALC_sum_a1;
+               (* keep *) logic [7:0] \///@1$val1 ;
+               assign \///@1$val1 = FpgaPins_Fpga_CALC_val1_a1;
+               (* keep *) logic [7:0] \///@0$val2 ;
+               assign \///@0$val2 = FpgaPins_Fpga_CALC_val2_a0;
+               (* keep *) logic  \///@1$valid ;
+               assign \///@1$valid = FpgaPins_Fpga_CALC_valid_a1;
+            end
+         end
+      end
+
+      //
       // Scope: /switch[7:0]
       //
       for (switch = 0; switch <= 7; switch++) begin : \/switch 
@@ -147,7 +314,7 @@ logic [6:0] L0_sseg_segment_n_a0;
 //_\TLV
    /* verilator lint_off UNOPTFLAT */
    // Connect Tiny Tapeout I/Os to Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 132 as: m5+tt_connections()
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 184 as: m5+tt_connections()
       assign L0_slideswitch_a0[7:0] = ui_in;
       assign L0_sseg_segment_n_a0[6:0] = ~ uo_out[6:0];
       assign L0_sseg_decimal_point_n_a0 = ~ uo_out[7];
@@ -155,7 +322,7 @@ logic [6:0] L0_sseg_segment_n_a0;
    //_\end_source
 
    // Instantiate the Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 135 as: m5+board(/top, /fpga, 7, $, , calc)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 187 as: m5+board(/top, /fpga, 7, $, , calc)
       
       //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 355   // Instantiated from /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv, 309 as: m4+thanks(m5__l(309)m5_eval(m5_get(BOARD_THANKS_ARGS)))
          //_/thanks
@@ -174,19 +341,66 @@ logic [6:0] L0_sseg_segment_n_a0;
             
             
             
-               // ==================
-               // |                |
-               // | YOUR CODE HERE |
-               // |                |
-               // ==================
+               //_|calc
+                  //_@0
+                     assign FpgaPins_Fpga_CALC_reset_a0 = reset;
             
-               // Note that pipesignals assigned here can be found under /fpga_pins/fpga.
+                     assign FpgaPins_Fpga_CALC_val2_a0[7:0] = {4'b0, ui_in[3:0]};
+                     assign FpgaPins_Fpga_CALC_op_a0[2:0] = ui_in[6:4];
+                     assign FpgaPins_Fpga_CALC_equals_in_a0 = ui_in[7];
+                  //_@1
+                     assign FpgaPins_Fpga_CALC_val1_a1[7:0] = FpgaPins_Fpga_CALC_out_a3;
+                     assign FpgaPins_Fpga_CALC_valid_a1 = FpgaPins_Fpga_CALC_reset_a1 ? 1'b0 : FpgaPins_Fpga_CALC_equals_in_a1 && ! FpgaPins_Fpga_CALC_equals_in_a2;
+            
+                     assign FpgaPins_Fpga_CALC_reset_or_valid_a1 = FpgaPins_Fpga_CALC_reset_a1 || FpgaPins_Fpga_CALC_valid_a1;
+            
+                     //_?$reset_or_valid
+                        assign FpgaPins_Fpga_CALC_sum_a1[7:0] = FpgaPins_Fpga_CALC_val1_a1 + FpgaPins_Fpga_CALC_val2_a1;
+                        assign FpgaPins_Fpga_CALC_diff_a1[7:0] = FpgaPins_Fpga_CALC_val1_a1 - FpgaPins_Fpga_CALC_val2_a1;
+                        assign FpgaPins_Fpga_CALC_prod_a1[7:0] = FpgaPins_Fpga_CALC_val1_a1 * FpgaPins_Fpga_CALC_val2_a1;
+                        assign FpgaPins_Fpga_CALC_quot_a1[7:0] = FpgaPins_Fpga_CALC_val1_a1 / FpgaPins_Fpga_CALC_val2_a1;
+                  //_@2
+                     assign FpgaPins_Fpga_CALC_out_a2[7:0] =
+                        FpgaPins_Fpga_CALC_reset_a2        ? 8'b0 :
+                        ! FpgaPins_Fpga_CALC_valid_a2      ? FpgaPins_Fpga_CALC_out_a3 :
+                        FpgaPins_Fpga_CALC_op_a2 == 3'b000 ? FpgaPins_Fpga_CALC_sum_a2 :
+                        FpgaPins_Fpga_CALC_op_a2 == 3'b001 ? FpgaPins_Fpga_CALC_diff_a2 :
+                        FpgaPins_Fpga_CALC_op_a2 == 3'b010 ? FpgaPins_Fpga_CALC_prod_a2 :
+                        FpgaPins_Fpga_CALC_op_a2 == 3'b011 ? FpgaPins_Fpga_CALC_quot_a2 :
+                        FpgaPins_Fpga_CALC_op_a2 == 3'b100 ? FpgaPins_Fpga_CALC_mem_a4 :
+                                        FpgaPins_Fpga_CALC_out_a3;
+            
+                     assign FpgaPins_Fpga_CALC_mem_a2[7:0] =
+                        FpgaPins_Fpga_CALC_reset_a2        ? 8'b0 :
+                        ! FpgaPins_Fpga_CALC_valid_a2      ? FpgaPins_Fpga_CALC_mem_a3 :
+                        FpgaPins_Fpga_CALC_op_a2 == 3'b101 ? FpgaPins_Fpga_CALC_out_a4 :
+                                        FpgaPins_Fpga_CALC_mem_a3;
+            
+                  //_@3
+                     assign FpgaPins_Fpga_CALC_digit_a3[3:0] = FpgaPins_Fpga_CALC_out_a3[3:0];
+                     assign uo_out =
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h0 ? 8'b00111111 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h1 ? 8'b00000110 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h2 ? 8'b01011011 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h3 ? 8'b01001111 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h4 ? 8'b01100110 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h5 ? 8'b01101101 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h6 ? 8'b01111101 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h7 ? 8'b00000111 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h8 ? 8'b01111111 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'h9 ? 8'b01101111 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'ha ? 8'b01110111 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'hb ? 8'b01111100 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'hc ? 8'b00111001 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'hd ? 8'b01011110 :
+                          FpgaPins_Fpga_CALC_digit_a3 == 8'he ? 8'b01111001 :
+                                           8'b01110001;
             
             
             
             
                // Connect Tiny Tapeout outputs. Note that uio_ outputs are not available in the Tiny-Tapeout-3-based FPGA boards.
-               assign uo_out = 8'b0;
+               //*uo_out = 8'b0;
                
                
             //_\end_source
@@ -225,7 +439,7 @@ logic [6:0] L0_sseg_segment_n_a0;
       
    //_\end_source
    // Label the switch inputs [0..7] (1..8 on the physical switch panel) (top-to-bottom).
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 137 as: m5+tt_input_labels_viz(⌈"Value[0]", "Value[1]", "Value[2]", "Value[3]", "Op[0]", "Op[1]", "Op[2]", "="⌉)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 189 as: m5+tt_input_labels_viz(⌈"Value[0]", "Value[1]", "Value[2]", "Value[3]", "Op[0]", "Op[1]", "Op[2]", "="⌉)
       for (input_label = 0; input_label <= 7; input_label++) begin : L1_InputLabel //_/input_label
          
       end

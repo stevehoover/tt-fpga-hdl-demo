@@ -309,9 +309,9 @@ logic FpgaPins_Fpga_PIPE_update_a0;
                      assign FpgaPins_Fpga_PIPE_reset_n1 = reset || ui_in[7];
                   //_@0
                      
-                     assign FpgaPins_Fpga_PIPE_row_a0[3:0] = ~(ui_in[3:0]);
-                     //*uo_out = {$LastButton, ~(4'b1 << $Col)};
-                     assign uo_out = ui_in;
+                     assign FpgaPins_Fpga_PIPE_row_a0[3:0] = ui_in[3:0];
+                     assign uo_out = {FpgaPins_Fpga_PIPE_LastButton_a0, 4'b1 << FpgaPins_Fpga_PIPE_Col_a0};
+                     //*uo_out = *ui_in;
                      assign FpgaPins_Fpga_PIPE_reset_falls_a0 = ! FpgaPins_Fpga_PIPE_reset_a0 && FpgaPins_Fpga_PIPE_reset_a1;
                      assign FpgaPins_Fpga_PIPE_ResetFell_n1 = FpgaPins_Fpga_PIPE_reset_falls_a0 || FpgaPins_Fpga_PIPE_ResetFell_a0;
                      assign FpgaPins_Fpga_PIPE_Seq_n1[21:0] =
@@ -331,7 +331,7 @@ logic FpgaPins_Fpga_PIPE_update_a0;
                                   FpgaPins_Fpga_PIPE_Button_a0[15:0];
                      // Check for one button each cycle.
                      assign FpgaPins_Fpga_PIPE_ButtonCnt_n1[3:0] = FpgaPins_Fpga_PIPE_reset_a0 ? 4'h0 : FpgaPins_Fpga_PIPE_ButtonCnt_a0 + 4'h1;
-                     assign FpgaPins_Fpga_PIPE_LastButton_n1[3:0] = FpgaPins_Fpga_PIPE_reset_a0 ? 4'h5 : FpgaPins_Fpga_PIPE_Button_a0[FpgaPins_Fpga_PIPE_ButtonCnt_a0] ? FpgaPins_Fpga_PIPE_ButtonCnt_a0 : FpgaPins_Fpga_PIPE_LastButton_a0;
+                     assign FpgaPins_Fpga_PIPE_LastButton_n1[3:0] = FpgaPins_Fpga_PIPE_reset_a0 ? 4'h0 : FpgaPins_Fpga_PIPE_Button_a0[FpgaPins_Fpga_PIPE_ButtonCnt_a0] ? FpgaPins_Fpga_PIPE_ButtonCnt_a0 : FpgaPins_Fpga_PIPE_LastButton_a0;
             
             
                // Connect Tiny Tapeout outputs. Note that uio_ outputs are not available in the Tiny-Tapeout-3-based FPGA boards.

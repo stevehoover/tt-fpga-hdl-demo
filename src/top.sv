@@ -17,11 +17,11 @@
 module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, output logic passed, output logic failed);
    // Tiny tapeout I/O signals.
    logic [7:0] ui_in, uo_out;
-   logic [7:0]uio_in,  uio_out, uio_oe;
+   
    
    
    assign ui_in = 8'b0;
-   assign uio_in = 8'b0;
+   
    logic ena = 1'b0;
    logic rst_n = ! reset;
 
@@ -62,11 +62,11 @@ endmodule
 module tt_um_template (
     input  wire [7:0] ui_in,    // Dedicated inputs - connected to the input switches
     output wire [7:0] uo_out,   // Dedicated outputs - connected to the 7 segment display
-       // The FPGA is based on TinyTapeout 3 which has no bidirectional I/Os (vs. TT6 for the ASIC).
+    /*   // The FPGA is based on TinyTapeout 3 which has no bidirectional I/Os (vs. TT6 for the ASIC).
     input  wire [7:0] uio_in,   // IOs: Bidirectional Input path
     output wire [7:0] uio_out,  // IOs: Bidirectional Output path
     output wire [7:0] uio_oe,   // IOs: Bidirectional Enable path (active high: 0=input, 1=output)
-    
+    */
     input  wire       ena,      // will go high when the design is enabled
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
@@ -1537,8 +1537,8 @@ logic [31:0] FpgaPins_Fpga_CPU_Xreg_value_a3 [15:0],
                   // Connect Tiny Tapeout outputs.
                   // Note that my_design will be under /fpga_pins/fpga.
                   assign uo_out = {6'b0, failed, passed};
-                  assign uio_out = 8'b0;
-                  assign uio_oe = 8'b0;
+                  
+                  
                
                       // For visualisation, argument should be at least equal to the last stage of CPU logic. @4 would work for all labs.
                //_\end_source

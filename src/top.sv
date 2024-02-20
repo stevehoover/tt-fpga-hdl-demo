@@ -4,7 +4,7 @@
 //_\SV
    // Include Tiny Tapeout Lab.
    // Included URL: "https://raw.githubusercontent.com/os-fpga/Virtual-FPGA-Lab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlv_lib/tiny_tapeout_lib.tlv"// Included URL: "https://raw.githubusercontent.com/os-fpga/Virtual-FPGA-Lab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlv_lib/fpga_includes.tlv"
-//_\source top.tlv 172
+//_\source top.tlv 194
 
 //_\SV
 
@@ -32,7 +32,7 @@ module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, outpu
        ({4{col_sel[3]}} & button[15:12]);
 
 
-   assign ui_in[7:4] = 4'b0;
+   assign ui_in[7:4] = 4'b0110;
    
    logic ena = 1'b0;
    logic rst_n = ! reset;
@@ -92,7 +92,7 @@ module tt_um_template (
 `define BOGUS_USE(ignore)
 
 
-genvar col, digit, input_label, leds, row, switch;
+genvar button, col, digit, input_label, leds, row, switch;
 
 
 //
@@ -111,15 +111,30 @@ logic [7:0] L0_sseg_digit_n_a0;
 // For $sseg_segment_n.
 logic [6:0] L0_sseg_segment_n_a0;
 
+// For /fpga_pins/fpga|pipe$display_digit.
+logic [3:0] FpgaPins_Fpga_PIPE_display_digit_a0;
+
+// For /fpga_pins/fpga|pipe$first.
+logic [3:0] FpgaPins_Fpga_PIPE_first_a0;
+
 // For /fpga_pins/fpga|pipe$reset.
 logic FpgaPins_Fpga_PIPE_reset_n1,
       FpgaPins_Fpga_PIPE_reset_a0;
 
-// For /fpga_pins/fpga|pipe$segments.
-logic [6:0] FpgaPins_Fpga_PIPE_segments_a0;
-
 // For /fpga_pins/fpga|pipe$segments_n.
 logic [6:0] FpgaPins_Fpga_PIPE_segments_n_a0;
+
+// For /fpga_pins/fpga|pipe$selected_mask.
+logic [15:0] FpgaPins_Fpga_PIPE_selected_mask_a0;
+
+// For /fpga_pins/fpga|pipe$uo_out.
+logic [7:0] FpgaPins_Fpga_PIPE_uo_out_a0;
+
+// For /fpga_pins/fpga|pipe/button$first_index.
+logic [3:0] FpgaPins_Fpga_PIPE_Button_first_index_a0 [15:0];
+
+// For /fpga_pins/fpga|pipe/button$found.
+logic FpgaPins_Fpga_PIPE_Button_found_a0 [15:0];
 
 // For /fpga_pins/fpga|pipe/keypad$Button.
 logic [15:0] FpgaPins_Fpga_PIPE_Keypad_Button_n1,
@@ -256,12 +271,40 @@ logic FpgaPins_Fpga_PIPE_Keypad_sampling_a0;
             // Scope: |pipe
             //
             if (1) begin : P_pipe
+               (* keep *) logic [3:0] \///@0$display_digit ;
+               assign \///@0$display_digit = FpgaPins_Fpga_PIPE_display_digit_a0;
+               (* keep *) logic [3:0] \///@0$first ;
+               assign \///@0$first = FpgaPins_Fpga_PIPE_first_a0;
                (* keep *) logic  \///@-1$reset ;
                assign \///@-1$reset = FpgaPins_Fpga_PIPE_reset_n1;
-               (* keep *) logic [6:0] \///@0$segments ;
-               assign \///@0$segments = FpgaPins_Fpga_PIPE_segments_a0;
                (* keep *) logic [6:0] \///@0$segments_n ;
                assign \///@0$segments_n = FpgaPins_Fpga_PIPE_segments_n_a0;
+               (* keep *) logic [15:0] \///@0$selected_mask ;
+               assign \///@0$selected_mask = FpgaPins_Fpga_PIPE_selected_mask_a0;
+               (* keep *) logic [7:0] \///@0$uo_out ;
+               assign \///@0$uo_out = FpgaPins_Fpga_PIPE_uo_out_a0;
+
+               //
+               // Scope: /button[15:0]
+               //
+               for (button = 0; button <= 15; button++) begin : \/button 
+                  (* keep *) logic [3:0] \////@0$first_index ;
+                  assign \////@0$first_index = FpgaPins_Fpga_PIPE_Button_first_index_a0[button];
+                  (* keep *) logic  \////@0$found ;
+                  assign \////@0$found = FpgaPins_Fpga_PIPE_Button_found_a0[button];
+                  (* keep *) logic  \////@0$its_me ;
+                  assign \////@0$its_me = L1_FpgaPins_Fpga_PIPE_Button[button].L1_its_me_a0;
+
+                  //
+                  // Scope: /prev
+                  //
+                  if (1) begin : \/prev 
+                     (* keep *) logic [3:0] \/////@0$first_index ;
+                     assign \/////@0$first_index = L1_FpgaPins_Fpga_PIPE_Button[button].L1_Prev_first_index_a0;
+                     (* keep *) logic  \/////@0$found ;
+                     assign \/////@0$found = L1_FpgaPins_Fpga_PIPE_Button[button].L1_Prev_found_a0;
+                  end
+               end
 
                //
                // Scope: /keypad
@@ -313,7 +356,7 @@ logic FpgaPins_Fpga_PIPE_Keypad_sampling_a0;
 //_\TLV
    /* verilator lint_off UNOPTFLAT */
    // Connect Tiny Tapeout I/Os to Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 253 as: m5+tt_connections()
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 275 as: m5+tt_connections()
       assign L0_slideswitch_a0[7:0] = ui_in;
       assign L0_sseg_segment_n_a0[6:0] = ~ uo_out[6:0];
       assign L0_sseg_decimal_point_n_a0 = ~ uo_out[7];
@@ -321,7 +364,7 @@ logic FpgaPins_Fpga_PIPE_Keypad_sampling_a0;
    //_\end_source
 
    // Instantiate the Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 256 as: m5+board(/top, /fpga, 7, $, , my_design)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 278 as: m5+board(/top, /fpga, 7, $, , my_design)
       
       //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 355   // Instantiated from /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv, 309 as: m4+thanks(m5__l(309)m5_eval(m5_get(BOARD_THANKS_ARGS)))
          //_/thanks
@@ -341,26 +384,26 @@ logic FpgaPins_Fpga_PIPE_Keypad_sampling_a0;
                   //_@-1
                      assign FpgaPins_Fpga_PIPE_reset_n1 = reset || ui_in[7];
                   //_@0
-                     //_\source top.tlv 60   // Instantiated from top.tlv, 163 as: m5+PmodKYPD(|pipe, /keypad, *uo_out[3:0], *ui_in[3:0], 1'b1, $segments[3:0], ⌈left: 40, top: 80, width: 20, height: 20⌉)
+                     //_\source top.tlv 60   // Instantiated from top.tlv, 163 as: m5+PmodKYPD(|pipe, /keypad, *uo_out[3:0], *ui_in[3:0], 1'b1, $uo_out[3:0], ⌈left: 40, top: 80, width: 20, height: 20⌉)
                         //_/keypad
                            assign FpgaPins_Fpga_PIPE_Keypad_reset_a0 = FpgaPins_Fpga_PIPE_reset_a0;
                      
                            // Connect the Pmod to uo_out[3:0] and ui_in[3:0].
-                           assign uo_out[3:0] = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 ? 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0 : FpgaPins_Fpga_PIPE_segments_a0[3:0];
+                           assign uo_out[3:0] = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 ? 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0 : FpgaPins_Fpga_PIPE_uo_out_a0[3:0];
                            assign FpgaPins_Fpga_PIPE_Keypad_row_a0[3:0] = ui_in[3:0];  // This is actually a column of data, indexed by row.
                            // Run fast in Makerchip simulation.
                            
                            
                      
                            // Sample once every 2^22 cycles.
-                           // Sample input 2^17 cycles after driving input.
-                           // When not driving outputs, drive $segments[3:0].
+                           // Sample input 2^20 cycles after driving input.
+                           // When not driving outputs, drive $uo_out[3:0].
                            // Determine when to update column keypad input
                            // and when to sample keypad output.
                            assign FpgaPins_Fpga_PIPE_Keypad_Seq_n1[23:0] =
                               FpgaPins_Fpga_PIPE_Keypad_reset_a0 ? 0 : FpgaPins_Fpga_PIPE_Keypad_Seq_a0 + 1;
-                           assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_Keypad_Seq_a0[21:17] == 5'b0;
-                           assign FpgaPins_Fpga_PIPE_Keypad_sample_a0 = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 && FpgaPins_Fpga_PIPE_Keypad_Seq_a0[16:0] == ~ 17'b0;
+                           assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_Keypad_Seq_a0[21:20] == 2'b0;
+                           assign FpgaPins_Fpga_PIPE_Keypad_sample_a0 = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 && FpgaPins_Fpga_PIPE_Keypad_Seq_a0[19:0] == ~ 20'b0;
                      
                            // Update column keypad input.
                            assign FpgaPins_Fpga_PIPE_Keypad_row_sel_a0[1:0] = FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:22];
@@ -413,28 +456,61 @@ logic FpgaPins_Fpga_PIPE_Keypad_sampling_a0;
                      
                            
                      //_\end_source
-                     //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 844   // Instantiated from top.tlv, 164 as: m5+sseg_decoder($segments_n, /keypad$digit_pressed)
+            
+                     // Several debug modes are supported.
+                     // Use 3'b000 for normal operation.
+                     // ui_in[4]: 0: output single button as digit; 1: output button mask
+                     // ui_in[5]: if as mask: 0: buttons 0-15; 1: buttons 16-31
+                     //           if as button: 0: normal operation; 1: debug output
+                     // ui_in[6]: 0: output $Buttons; 1: output $Reported
+                     assign FpgaPins_Fpga_PIPE_selected_mask_a0[15:0] = ui_in[6] ? FpgaPins_Fpga_PIPE_Keypad_Reported_a0 : FpgaPins_Fpga_PIPE_Keypad_Button_a0;
+                     // Find $first button in $selected_mask.
+                     /* verilator lint_off UNOPTFLAT */
+                     for (button = 0; button <= 15; button++) begin : L1_FpgaPins_Fpga_PIPE_Button //_/button
+
+                        // For $its_me.
+                        logic L1_its_me_a0;
+
+                        // For /prev$first_index.
+                        logic [3:0] L1_Prev_first_index_a0;
+
+                        // For /prev$found.
+                        logic L1_Prev_found_a0;
+
+                        //_/prev
+                           assign {L1_Prev_first_index_a0[3:0], L1_Prev_found_a0} = {FpgaPins_Fpga_PIPE_Button_first_index_a0[button - 1], FpgaPins_Fpga_PIPE_Button_found_a0[button - 1]};
+                        assign L1_its_me_a0 = (button == 0 || ! L1_Prev_found_a0) && FpgaPins_Fpga_PIPE_selected_mask_a0[button];
+                        assign FpgaPins_Fpga_PIPE_Button_found_a0[button] = (button > 0 && L1_Prev_found_a0) || L1_its_me_a0;
+                        assign FpgaPins_Fpga_PIPE_Button_first_index_a0[button][3:0] = L1_its_me_a0 ? button : button == 0 ? 4'b0 : L1_Prev_first_index_a0;
+                     end
+                     assign FpgaPins_Fpga_PIPE_first_a0[3:0] = FpgaPins_Fpga_PIPE_Button_first_index_a0[15];
+                     /* verilator lint_on UNOPTFLAT */
+            
+                     assign FpgaPins_Fpga_PIPE_display_digit_a0[3:0] =
+                        ui_in[5] ? FpgaPins_Fpga_PIPE_Keypad_digits_a0[(FpgaPins_Fpga_PIPE_first_a0 * 4) +: 4] :
+                                    FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0;
+                     //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 844   // Instantiated from top.tlv, 186 as: m5+sseg_decoder($segments_n, $display_digit)
                         assign FpgaPins_Fpga_PIPE_segments_n_a0[6:0] =
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 0) ? 7'b1000000 : // '0'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 1) ? 7'b1111001 : // '1'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 2) ? 7'b0100100 : // '2'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 3) ? 7'b0110000 : // '3'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 4) ? 7'b0011001 : // '4'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 5) ? 7'b0010010 : // '5'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 6) ? 7'b0000010 : // '6'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 7) ? 7'b1111000 : // '7'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 8) ? 7'b0000000 : // '8'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 9) ? 7'b0010000 : // '9'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 10) ? 7'b0001000 : // 'a'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 11) ? 7'b0000011 : // 'b'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 12) ? 7'b1000110 : // 'c'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 13) ? 7'b0100001 : // 'd'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 14) ? 7'b0000110 : // 'e'
-                             (FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a0 == 15) ? 7'b0001110 : // 'f'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 0) ? 7'b1000000 : // '0'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 1) ? 7'b1111001 : // '1'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 2) ? 7'b0100100 : // '2'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 3) ? 7'b0110000 : // '3'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 4) ? 7'b0011001 : // '4'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 5) ? 7'b0010010 : // '5'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 6) ? 7'b0000010 : // '6'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 7) ? 7'b1111000 : // '7'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 8) ? 7'b0000000 : // '8'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 9) ? 7'b0010000 : // '9'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 10) ? 7'b0001000 : // 'a'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 11) ? 7'b0000011 : // 'b'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 12) ? 7'b1000110 : // 'c'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 13) ? 7'b0100001 : // 'd'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 14) ? 7'b0000110 : // 'e'
+                             (FpgaPins_Fpga_PIPE_display_digit_a0 == 15) ? 7'b0001110 : // 'f'
                              7'b1111111 ;                // 'nothing'
                      //_\end_source
-                     assign FpgaPins_Fpga_PIPE_segments_a0[6:0] = ~ FpgaPins_Fpga_PIPE_segments_n_a0;
-                     assign uo_out[7:4] = {1'b0, FpgaPins_Fpga_PIPE_segments_a0[6:4]};
+                     assign FpgaPins_Fpga_PIPE_uo_out_a0[7:0] = ui_in[4] ? {ui_in[5] ? FpgaPins_Fpga_PIPE_selected_mask_a0[15:8] : FpgaPins_Fpga_PIPE_selected_mask_a0[7:0]} : {1'b0, ~ FpgaPins_Fpga_PIPE_segments_n_a0};
+                     assign uo_out[7:4] = FpgaPins_Fpga_PIPE_uo_out_a0[7:4];
                      
             
                // Connect Tiny Tapeout outputs. Note that uio_ outputs are not available in the Tiny-Tapeout-3-based FPGA boards.
@@ -476,7 +552,7 @@ logic FpgaPins_Fpga_PIPE_Keypad_sampling_a0;
       
    //_\end_source
    // Label the switch inputs [0..7] (1..8 on the physical switch panel) (top-to-bottom).
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 258 as: m5+tt_input_labels_viz(⌈"UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED"⌉)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 280 as: m5+tt_input_labels_viz(⌈"UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED"⌉)
       for (input_label = 0; input_label <= 7; input_label++) begin : L1_InputLabel //_/input_label
          
       end

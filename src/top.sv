@@ -482,8 +482,8 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                            //   $row_sel[1:0] = |pipe$debug ? $Seq[23:         22] :
                            //                                 $Seq[13:12];
                            // Connect the Pmod to uo_out[3:0] and ui_in[3:0].
-                           //$_pmod_in = $sampling ? 4'b1 << $row_sel : |pipe$sseg_out[3:0];
-                           assign FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0[3:0] = 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                           assign FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0[3:0] = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 ? 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0 : FpgaPins_Fpga_PIPE_sseg_out_a0[3:0];
+                           //$_pmod_in = 4'b1 << $row_sel;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         //_@1
                   
                            //_?$sample

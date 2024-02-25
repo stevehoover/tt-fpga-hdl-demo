@@ -32,7 +32,7 @@ module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, outpu
        ({4{col_sel[3]}} & button[15:12]);
 
 
-   assign ui_in[7:4] = 4'b0110;
+   assign ui_in[7:4] = 4'b0000;
    
    logic ena = 1'b0;
    logic rst_n = ! reset;
@@ -47,7 +47,9 @@ module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, outpu
       #10 // Step 5 cycles, past reset.
          button = 16'b0000_0000_0000_0000;
       #200
-         button = 16'b0000_0010_0000_0000;
+         button = 16'b0000_0000_0000_0001;
+      #200
+         button = 16'b0000_0000_0000_0000;
    end
 
    // Instantiate the Tiny Tapeout module.
@@ -416,7 +418,7 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
 //_\TLV
    /* verilator lint_off UNOPTFLAT */
    // Connect Tiny Tapeout I/Os to Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 313 as: m5+tt_connections()
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 315 as: m5+tt_connections()
       assign L0_slideswitch_a0[7:0] = ui_in;
       assign L0_sseg_segment_n_a0[6:0] = ~ uo_out[6:0];
       assign L0_sseg_decimal_point_n_a0 = ~ uo_out[7];
@@ -424,7 +426,7 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
    //_\end_source
 
    // Instantiate the Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 316 as: m5+board(/top, /fpga, 7, $, , my_design)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 318 as: m5+board(/top, /fpga, 7, $, , my_design)
       
       //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 355   // Instantiated from /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv, 309 as: m4+thanks(m5__l(309)m5_eval(m5_get(BOARD_THANKS_ARGS)))
          //_/thanks
@@ -471,16 +473,16 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                            assign FpgaPins_Fpga_PIPE_Keypad_Seq_n1[23:0] =
                               FpgaPins_Fpga_PIPE_Keypad_reset_a0 ? 0 : FpgaPins_Fpga_PIPE_Keypad_Seq_a0 + 1;
                            assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[21:         20] == 2'b0 :
-                                                     FpgaPins_Fpga_PIPE_Keypad_Seq_a0[11:7] == 5'b0;
+                                                     FpgaPins_Fpga_PIPE_Keypad_Seq_a0[12:10] == 3'b0;
                            assign FpgaPins_Fpga_PIPE_Keypad_sample_a0 = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 &&
                                      FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[19:0] == ~          20'b0 :
-                                                   FpgaPins_Fpga_PIPE_Keypad_Seq_a0[6:0] == ~ 7'b0;
+                                                   FpgaPins_Fpga_PIPE_Keypad_Seq_a0[9:0] == ~ 10'b0;
                   
                            // Update column keypad input.
                            //$row_sel[1:0] = 2'h1;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                            //?$sampling
                            assign FpgaPins_Fpga_PIPE_Keypad_row_sel_a0[1:0] = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:         22] :
-                                                         FpgaPins_Fpga_PIPE_Keypad_Seq_a0[13:12];
+                                                         FpgaPins_Fpga_PIPE_Keypad_Seq_a0[14:13];
                            // Connect the Pmod to uo_out[3:0] and ui_in[3:0].
                            //$_pmod_in = $sampling ? 4'b1 << $row_sel : |pipe$sseg_out[3:0];
                            assign FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0[3:0] = 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0;
@@ -646,7 +648,7 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
       
    //_\end_source
    // Label the switch inputs [0..7] (1..8 on the physical switch panel) (top-to-bottom).
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 318 as: m5+tt_input_labels_viz(⌈"KYPD row0", "KYPD row1", "KYPD row2", "KYPD row3", "D:Mask", "D:High/Dbg", "D:Reported", "Reset"⌉)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 320 as: m5+tt_input_labels_viz(⌈"KYPD row0", "KYPD row1", "KYPD row2", "KYPD row3", "D:Mask", "D:High/Dbg", "D:Reported", "Reset"⌉)
       for (input_label = 0; input_label <= 7; input_label++) begin : L1_InputLabel //_/input_label
          
       end

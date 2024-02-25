@@ -165,7 +165,7 @@ logic [15:0] FpgaPins_Fpga_PIPE_Keypad_Reported_a0,
              FpgaPins_Fpga_PIPE_Keypad_Reported_a1;
 
 // For /fpga_pins/fpga|pipe/keypad$Seq.
-logic [23:0] FpgaPins_Fpga_PIPE_Keypad_Seq_n1,
+logic [25:0] FpgaPins_Fpga_PIPE_Keypad_Seq_n1,
              FpgaPins_Fpga_PIPE_Keypad_Seq_a0;
 
 // For /fpga_pins/fpga|pipe/keypad$check_mask.
@@ -255,7 +255,7 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                always_ff @(posedge clk) FpgaPins_Fpga_PIPE_Keypad_Reported_a1[15:0] <= FpgaPins_Fpga_PIPE_Keypad_Reported_a0[15:0];
 
                // Staging of $Seq.
-               always_ff @(posedge clk) FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:0] <= FpgaPins_Fpga_PIPE_Keypad_Seq_n1[23:0];
+               always_ff @(posedge clk) FpgaPins_Fpga_PIPE_Keypad_Seq_a0[25:0] <= FpgaPins_Fpga_PIPE_Keypad_Seq_n1[25:0];
 
                // Staging of $digit_pressed.
                always_ff @(posedge clk) FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a2[3:0] <= FpgaPins_Fpga_PIPE_Keypad_digit_pressed_a1[3:0];
@@ -374,7 +374,7 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                   assign \////@0$CheckButton = FpgaPins_Fpga_PIPE_Keypad_CheckButton_a0;
                   (* keep *) logic [15:0] \////@0$Reported ;
                   assign \////@0$Reported = FpgaPins_Fpga_PIPE_Keypad_Reported_a0;
-                  (* keep *) logic [23:0] \////@-1$Seq ;
+                  (* keep *) logic [25:0] \////@-1$Seq ;
                   assign \////@-1$Seq = FpgaPins_Fpga_PIPE_Keypad_Seq_n1;
                   (* keep *) logic [15:0] \////@1$check_mask ;
                   assign \////@1$check_mask = FpgaPins_Fpga_PIPE_Keypad_check_mask_a1;
@@ -465,27 +465,27 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                            
                            
                   
-                           // Sample once every 2^22 cycles.
-                           // Sample input 2^20 cycles after driving input.
+                           // Sample once every 2^24 cycles.
+                           // Sample input 2^23 cycles after driving input.
                            // When not driving outputs, drive $sseg_out[3:0].
                            // Determine when to update column keypad input
                            // and when to sample keypad output.
-                           assign FpgaPins_Fpga_PIPE_Keypad_Seq_n1[23:0] =
+                           assign FpgaPins_Fpga_PIPE_Keypad_Seq_n1[25:0] =
                               FpgaPins_Fpga_PIPE_Keypad_reset_a0 ? 0 : FpgaPins_Fpga_PIPE_Keypad_Seq_a0 + 1;
-                           assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[21:         20] == 2'b0 :
-                                                     FpgaPins_Fpga_PIPE_Keypad_Seq_a0[16:15] == 2'b0;
+                           assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:         23] == 1'b0 :
+                                                      FpgaPins_Fpga_PIPE_Keypad_Seq_a0[16:15] == 2'b0;
                            assign FpgaPins_Fpga_PIPE_Keypad_sample_a0 = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 &&
-                                     FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[19:0] == ~          20'b0 :
-                                                   FpgaPins_Fpga_PIPE_Keypad_Seq_a0[14:0] == ~ 15'b0;
+                                     FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[22:0] == ~          23'b0 :
+                                                    FpgaPins_Fpga_PIPE_Keypad_Seq_a0[14:0] == ~ 15'b0;
                   
                            // Update column keypad input.
                            //$row_sel[1:0] = 2'h1;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                            //_?$sampling
-                              assign FpgaPins_Fpga_PIPE_Keypad_row_sel_a0[1:0] = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:         22] :
+                              assign FpgaPins_Fpga_PIPE_Keypad_row_sel_a0[1:0] = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[25:         24] :
                                                              FpgaPins_Fpga_PIPE_Keypad_Seq_a0[18:17];
                            // Connect the Pmod to uo_out[3:0] and ui_in[3:0].
-                           assign FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0[3:0] = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 ? 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0 : FpgaPins_Fpga_PIPE_sseg_out_a0[3:0];
-                           //$_pmod_in = 4'b1 << $row_sel;
+                           //$_pmod_in = $sampling ? 4'b1 << $row_sel : |pipe$sseg_out[3:0];
+                           assign FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0[3:0] = 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0;
                         //_@1
                   
                            //_?$sample

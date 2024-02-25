@@ -473,15 +473,15 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                            assign FpgaPins_Fpga_PIPE_Keypad_Seq_n1[25:0] =
                               FpgaPins_Fpga_PIPE_Keypad_reset_a0 ? 0 : FpgaPins_Fpga_PIPE_Keypad_Seq_a0 + 1;
                            assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:         23] == 1'b0 :
-                                                      FpgaPins_Fpga_PIPE_Keypad_Seq_a0[11:7] == 5'b0;
+                                                      FpgaPins_Fpga_PIPE_Keypad_Seq_a0[14:12] == 3'b0;
                            assign FpgaPins_Fpga_PIPE_Keypad_sample_a0 = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 &&
                                      (FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[22:0] == ~          23'b0 :
-                                                     FpgaPins_Fpga_PIPE_Keypad_Seq_a0[6:0] == ~ 7'b0);
+                                                     FpgaPins_Fpga_PIPE_Keypad_Seq_a0[11:0] == ~ 12'b0);
                   
                            // Update column keypad input.
                            //_?$sampling
                               assign FpgaPins_Fpga_PIPE_Keypad_row_sel_a0[1:0] = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[25:         24] :
-                                                             FpgaPins_Fpga_PIPE_Keypad_Seq_a0[13:12];
+                                                             FpgaPins_Fpga_PIPE_Keypad_Seq_a0[16:15];
                            // Connect the Pmod to uo_out[3:0] and ui_in[3:0].
                            assign FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0[3:0] = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 ? 4'b1 << FpgaPins_Fpga_PIPE_Keypad_row_sel_a0 : FpgaPins_Fpga_PIPE_sseg_out_a0[3:0];
                         //_@1

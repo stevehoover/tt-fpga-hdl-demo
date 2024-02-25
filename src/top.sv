@@ -475,8 +475,8 @@ logic [3:0] FpgaPins_Fpga_PIPE_Keypad_uo_out_lower_a0;
                            assign FpgaPins_Fpga_PIPE_Keypad_sampling_a0 = FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[23:         23] == 1'b0 :
                                                       FpgaPins_Fpga_PIPE_Keypad_Seq_a0[16:15] == 2'b0;
                            assign FpgaPins_Fpga_PIPE_Keypad_sample_a0 = FpgaPins_Fpga_PIPE_Keypad_sampling_a0 &&
-                                     FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[22:0] == ~          23'b0 :
-                                                    FpgaPins_Fpga_PIPE_Keypad_Seq_a0[14:0] == ~ 15'b0;
+                                     (FpgaPins_Fpga_PIPE_debug_a0 ? FpgaPins_Fpga_PIPE_Keypad_Seq_a0[22:0] == ~          23'b0 :
+                                                     FpgaPins_Fpga_PIPE_Keypad_Seq_a0[14:0] == ~ 15'b0);
                   
                            // Update column keypad input.
                            //$row_sel[1:0] = 2'h1;  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!

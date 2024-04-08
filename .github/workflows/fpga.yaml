@@ -39,7 +39,9 @@ jobs:
       - name: build the bitstream
         shell: bash
         run: |
-          cd src
+          cd test
+          make verilog
+          cd ../src
           # sed -i '/uio_/d' tt_um_wokwi_*.v
           make -f Makefile.FPGA
 

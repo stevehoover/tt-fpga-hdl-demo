@@ -41,7 +41,7 @@ jobs:
         run: |
           cd test
           # Configure source file for FPGA build
-          sed -i 's/ASIC/FPGA/' project.v
+          sed -i 's/ASIC/FPGA/' project.tlv
           make verilog
           cd ../src
           # sed -i '/uio_/d' tt_um_wokwi_*.v

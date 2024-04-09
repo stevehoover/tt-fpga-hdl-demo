@@ -39,11 +39,10 @@ jobs:
       - name: build the bitstream
         shell: bash
         run: |
-          cd test
+          cd src
           # Configure source file for FPGA build
           sed -i 's/ASIC/FPGA/' project.tlv
-          make verilog
-          cd ../src
+          (cd ../test && make verilog)
           # sed -i '/uio_/d' tt_um_wokwi_*.v
           make -f Makefile.FPGA
 
